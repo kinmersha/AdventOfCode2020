@@ -28,7 +28,6 @@ class Field:
 
 def part1():
     field = Field('day03/input')
-    # print(field.mat)
     numTrees = 0
     for row in range(1, field.height):
         col = 3*row
@@ -36,13 +35,31 @@ def part1():
 
     print(f'Part 1 answer: {numTrees}')
 
-# def part2():
-#     passwords = [Part2Password(p) for p in read_data()]
-#     tf = [p.isValid() for p in passwords]
-#     print(f'Part 1 answer: {sum(tf)}')
+def traverse(field, slope):
+    dx, dy = slope #unpack
+    x = 0  # start
+    y = 0
+    numTrees = 0
+    while y < field.height:
+        numTrees += field.isTree(y, x)
+        x += dx
+        y += dy
+    
+    return numTrees
+
+def part2():
+    slopes = [(1,1), (3,1), (5,1), (7,1), (1,2)]
+    field = Field('day03/input')
+
+    trees = []
+    for slope in slopes:
+        trees.append(traverse(field, slope))
+        print(f'For slope right {slope[0]}, down {slope[1]}: hit {trees[-1]} trees')
+
+    print(f'Part 2 answer: {math.prod(trees)}')
 
 
 
 if __name__ == '__main__':
     part1()
-    # part2()
+    part2()

@@ -1,3 +1,4 @@
+import math
 magic_num = 2020
 
 def part1_lazy():
@@ -13,7 +14,6 @@ def part1_lazy():
                 return
 
 def part2_lazy():
-    import math
     from itertools import combinations
 
     with open('day01/input') as f:

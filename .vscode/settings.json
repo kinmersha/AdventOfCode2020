@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "C:\\Users\\kinme\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
+    "python.pythonPath": "C:\\Users\\kinme\\AppData\\Local\\Programs\\Python\\Python39\\python.exe",
+    "editor.rulers": [80]
 }

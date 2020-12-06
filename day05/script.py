@@ -1,4 +1,3 @@
-
 class BoardingPass:
     def __init__(self, t):
         t = t.replace('B', '1')

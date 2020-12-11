@@ -84,8 +84,6 @@ def part1():
     g = read_data()
 
     root = g.get_node('shiny gold')  # Find our bag
-    print(root.contains)
-    print(root.contained_by)
     root.marked = True
     
     # Try to write graph traversal from memory
@@ -94,6 +92,8 @@ def part1():
     # Looks like I wrote a depth-first approach and this is actually a stack
     count = 0
     queue = [n for n in root.contained_by]
+    for n in queue:
+        n.marked = True
     while queue:
         n = queue.pop()
         n.marked = True
@@ -102,6 +102,7 @@ def part1():
         for adj in n.contained_by:
             if not adj.marked:
                 queue.append(adj)
+                # adj.marked = True # Need to make sure nodes are not re-added
 
     print(f'Part 1 answer: {count}')
 

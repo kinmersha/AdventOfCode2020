@@ -1,5 +1,9 @@
-def execute(lines, visited, i, acc):
+def execute(lines):
     # This function executes normally like in part 1
+    visited = [False] * len(lines)
+    i = 0
+    acc = 0
+
     while i < len(lines):
         if visited[i]:
             return ("no good :(", acc)
@@ -24,12 +28,8 @@ def execute(lines, visited, i, acc):
 
 def part1():
     with open(f'day08/input') as f:
-        lines = f.readlines()
-
-        visited = [False] * len(lines)
-        i = 0
-        acc = 0
-        ans, acc = execute(lines, visited, i, acc)
+        lines = f.readlines()      
+        ans, acc = execute(lines)
                 
     print(f'Part 1 answer: {acc}')
 
@@ -56,9 +56,7 @@ def part2():
                 # check alternate version
                 var_lines = lines.copy()
                 var_lines[i] = f'jmp {addr:+}'
-                var_visited = visited.copy()
-                var_visited[i] = False
-                ans, acc = execute(var_lines, var_visited, i, acc)
+                ans, acc = execute(var_lines)
                 if ans != 'no good :(':
                     break
 
@@ -72,9 +70,7 @@ def part2():
                 # check alternate version
                 var_lines = lines.copy()
                 var_lines[i] = f'nop {addr:+}'
-                var_visited = visited.copy()
-                var_visited[i] = False
-                ans, acc = execute(var_lines, var_visited, i, acc)
+                ans, acc = execute(var_lines)
                 if ans != 'no good :(':
                     break
 

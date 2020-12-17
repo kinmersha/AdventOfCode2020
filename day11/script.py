@@ -12,6 +12,7 @@ class Arena:
         self.height = len(self.grid)
         self.width = len(self.grid[0])
         self.rounds = 0
+        self.thresh = 4  # Number of surrounding seats occupied for person to leave
 
     def convert(self, c):
         if c == '.':
@@ -56,7 +57,7 @@ class Arena:
                     # If there are no neighbors, fill it
                     row.append(self.check(i, j) == 0)
                 else:  # Full seat
-                    row.append(not (self.check(i, j) >= 4))
+                    row.append(not (self.check(i, j) >= self.thresh))
             next_grid.append(row)
 
         
@@ -95,5 +96,51 @@ def part1():
     print(f'Part 1 answer: {arena.get_seat_count()}')
 
 
+# Get all "looking" direction vectors plus the stationary vector (0, 0)
+deltas = list(itertools.product((-1, 0, 1), (-1, 0, 1)))
+deltas.remove((0, 0))
+
+
+class P2Arena(Arena):
+    def creep(self, r, c, dr, dc):
+        # Creep from the start point in the direction pointed to by the delta 
+        # vector (dr, dc) (delta row, delta column), until it either hits an
+        # occupied seat or the edge of the frame.
+        while True:
+            r += dr
+            c += dc
+            if r < 0 or r >= self.height: # Didn't hit anything
+                return 0
+            elif c < 0 or c >= self.width:
+                return 0
+            elif self.grid[r][c] == 1: # Hit an occupied seat
+                return 1
+            elif self.grid[r][c] == 0:  # Hit an empty seat
+                return 0
+            # Otherwise keep creeping
+
+    def check(self, row, col):
+        # Overwrite check method for new "looking" behavior
+        count = 0
+        for d in deltas:
+            count += self.creep(row, col, d[0], d[1])
+
+        return count
+        
+
+def part2():
+    # Write P2Arena class, just needs to override self.check() and set self.thresh = 5
+    arena = P2Arena('day11/input')
+    arena.thresh = 5
+
+    # arena.print_grid()
+    while arena.update():
+        # arena.print_grid()
+        pass
+
+    print(f'Part 2 answer: {arena.get_seat_count()}')
+
+
 if __name__ == '__main__':
     part1()
+    part2()

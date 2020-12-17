@@ -30,5 +30,34 @@ def part1():
     print(f'Part 1 answer: {abs(x) + abs(y)}')
 
 
+def rotation(x, y, deg):
+    rad = deg * pi / 180
+    newX = int(round(x * cos(rad) - y * sin(rad)))
+    newY = int(round(x * sin(rad) + y * cos(rad)))
+    return newX, newY
+
+def part2():
+    # Waypoint is relative to the ship, forward moves ship along multiples of 
+    # the waypoint vector, other move the waypoint relative to the ship.
+    x, y = 0, 0
+    waypoint = (10, 1)
+    bearings = {'N': 90, 'E': 0, 'S': -90, 'W': 180}
+
+    commands = read_data('day12/input')
+    for c in commands:
+        if c[0] in bearings:
+            waypoint = move(waypoint[0], waypoint[1], c[1], bearings[c[0]])
+        elif c[0] == 'F':
+            x, y = x + waypoint[0] * c[1], y + waypoint[1] * c[1]
+        elif c[0] == 'L':
+            waypoint = rotation(waypoint[0], waypoint[1], c[1])
+        else:  # 'R'
+            waypoint = rotation(waypoint[0], waypoint[1], -c[1])
+
+    # Answer is manhattan distance traveled
+    print(f'Part 2 answer: {abs(x) + abs(y)}')
+
+
 if __name__ == '__main__':
     part1()
+    part2()
